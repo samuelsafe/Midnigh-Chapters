@@ -1,7 +1,6 @@
 @charset "UTF-8";
 body{
     font-family: Arial, Helvetica, sans-serif ;
-    background-color: rgb(240, 209, 249);
 }
 h1{
     width: 300px;
@@ -17,6 +16,6 @@ h2{
     border-style: solid;
 }
 p{
-    border-style: groove;
+    border-style: ;
 
 }
