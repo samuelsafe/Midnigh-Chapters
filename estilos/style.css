@@ -11,31 +11,40 @@ h1{
 }
 h1 > a {
     color: #d3d3d3;
+    text-decoration: none;
 }
 h2{
     text-align: center;
     color: #d3d3d3;
     background-color: #240046;
 }
+h3{
+    color: #d3d3d3;
+}
 header{
     text-align: center;
 }
 nav{
     text-align: center;
-
-}
-nav > a {
-    text-decoration: none;
-}
-nav > a:hover{
-    text-decoration: solid;
-
 }
 main{
     text-align: center;
 }
 footer{
     text-align: right;
+}
+.container{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+
+}
+.box{
+    width: 100px;
+    height: 22px;
+    background-color: #7b2cbf;
+    border-radius: 6px;
+    text-align: center;
 }
 .livro{
     background-color: #7b2cbf;
