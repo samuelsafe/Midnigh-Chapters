@@ -13,10 +13,12 @@
     --font-destaque:'Playwrite NZ Guides', cursive;
     --font-titulos:'lobster', cursive;
     --font-livros:'felipa', cursive;
+    --cor0: #10002B;
+    --cor1: #240046;
+    --cor2: #3C096C;
+    --cor4: #5A189A;
 }
-*{
-    margin: ;
-}
+
 body > header{
     margin: auto;
 }
@@ -25,7 +27,7 @@ body{
     background-color: #d3d3d3;
 }
 h1{
-    background-color: #240046;
+    background-color: var(--cor0);
     color: #d3d3d3;
     text-align: center;
     text-decoration: none;
@@ -42,15 +44,16 @@ p{
 h2{
     text-align: center;
     color: #d3d3d3;
-    background-color: #240046;
+    background-color: var(--cor1);
 }
 h3{
     color: #d3d3d3;
-    background-color: #240046;
+    background-color: var(--cor0);
+    margin-top: 0px;
 }
 header{
     text-align: center;
-    background-color: #240046;
+    background-color: var(--cor0);
 }
 nav{
     text-align: center;
@@ -65,20 +68,20 @@ main{
 }
 footer{
     text-align: right;
-    background-color: #240046;
+    background-color: var(--cor0);
 }
-.container{
+#teste{
+    background-color: aqua;
+    height: 400px;
     display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    margin-left: 86px;
-
+    justify-items: center;
+    justify-content: space-evenly;
 }
-.box{
-    width: 100px;
-    height: 22px;
-    background-color: #7b2cbf;
-    border-radius: 6px;
+.teste{
+    background-color: #ffc0c0;
+    width: 400px;
+    height: 400px;
+    border-radius: 10px;
 }
 .livro{
     background-color: white;
