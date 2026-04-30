@@ -1,50 +1,434 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midnight Chapters</title>
-    <link rel="stylesheet" href="estilos/style.css">
-    <link rel="shortcut icon" href="favicom/favicomPrincipal.jpeg" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="../estilos/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="favicom/favicomPrincipal.jpeg" type="image/x-icon">
+  <title>Midnight-Chapters</title>
 </head>
 <body>
-    <header>
-        <h1>Midnight Chapters</h1>
-        <p>Esta pagina foi criada no intuito de indicar livros e aproximar mais seus leitores, compartilhando experiências e emoções.</p>
-    </header>
-    <nav>
-            <a href="#" class="box">Destaques</a>
-            <a href="#" class="box">Indicações</a>
-            <a href="categoria.html" class="box" target="_self">Categoria</a>
-    </nav>
-    <main>
-        <div class="texto">
-            <h2>Destaques</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil voluptate alias in eaque commodi nisi voluptatem architecto incidunt.</p>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">Midnight-Chapters</a>
+  <nav>
+    <a href="#" class="nav-hide">Início</a>
+    <a href="#" class="nav-hide">Categorias</a>
+    <a href="#" class="nav-hide">Minha Estante</a>
+    <a href="#" class="nav-cta">Identificar-se</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Biblioteca Digital</div>
+  <h1>Bem-vindo(a) à Midnight-Chapters!</h1>
+  <p>Aproveite a nossa variedade de livros para ler, quando e onde quiser.</p>
+  <a href="#catalogo" class="hero-btn">Explorar catálogo</a>
+</section>
+
+<!-- FEATURED STRIP -->
+<main id="catalogo">
+  <div class="featured-strip">
+    <div class="featured-strip-text">
+      <div class="featured-strip-tag">Destaque da semana</div>
+      <h2>Colecione experiências,<br>não apenas livros.</h2>
+      <p>Acesse milhares de títulos em qualquer dispositivo, a qualquer hora.</p>
+    </div>
+    <a href="#" class="featured-strip-cta">Ver destaques</a>
+  </div>
+
+  <!-- ARTES -->
+  <section class="section" id="artes">
+    <div class="section-header">
+      <h2 class="section-title">Artes</h2>
+      <a href="#" class="section-link">Ver mais →</a>
+    </div>
+    <div class="book-grid">
+
+      <a class="book-card" href="livro-samba.html" title="Uma história do samba: As origens">
+        <div class="book-cover-wrap">
+          <img src="imagens/mentirosos-300.png" alt="">
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
         </div>
-            <div class="teste2"> 
-                <div class="teste shadow box">
-                    <h3 class="margin-baixo">Mentirosos</h3>
-                    <a href="livros/mentirosos.html" target="_self" ><img src="imagens/mentirosos-300.png" alt="livro mentirosos" width="200px" height="350px"></a>
-                </div>
-                <div class="teste shadow box">
-                    <h3 class="margin-baixo">Vermelho, branco e sangue azul</h3>
-                    <a href="livros/vermelhoBranco.html"><img src="imagens/Vermelho-300.png" alt="LivroVermelhoBranco" width="200px" height="350px"></a>
-                </div>
-            </div>
-            <div class="teste2"> 
-                <div class="teste shadow box">
-                    <h3 class="margin-baixo">Mentirosos</h3>
-                    <a href="livros/mentirosos.html" target="_self" ><img src="imagens/mentirosos-300.png" alt="livro mentirosos" width="200px" height="350px"></a>
-                </div>
-                <div class="teste shadow box">
-                    <h3 class="margin-baixo">Vermelho, branco e sangue azul</h3>
-                    <a href="livros/vermelhoBranco.html"><img src="imagens/Vermelho-300.png" alt="LivroVermelhoBranco" width="200px" height="350px"></a>
-                </div>
-            </div>
-    </main>
-    <footer>
-        <a href="#">Sobre a Pagina</a>
-    </footer>
+        <div class="book-info">
+          <div class="book-title">Uma história do samba: As origens</div>
+          <div class="book-author">Lira Neto</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-dylan.html" title="Letras (1961–1974) Edição bilíngue">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-hot">Popular</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">Bob Dylan Letras 1961–1974</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Letras (1961–1974) Edição bilíngue</div>
+          <div class="book-author">Bob Dylan</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-world-cinema.html" title="World Cinema: As novas cartografias do cinema">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#2c3e50,#4ca1af);">World Cinema</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">World Cinema: As novas cartografias do cinema</div>
+          <div class="book-author">Lúcia Nagib</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-design.html" title="O Design do dia a dia">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-new">Novo</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#e74c3c,#f39c12);">O Design do Dia a Dia</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">O design do dia a dia</div>
+          <div class="book-author">Donald A. Norman</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-cinemas-redes.html" title="Cinemas em redes: Tecnologia, estética e política">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#3a3a3a,#636363);">Cinemas em Redes</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Cinemas em redes: Tecnologia, estética e política</div>
+          <div class="book-author">Gilberto Alexandre Sobrinho</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-direito-cinema.html" title="Direito e Cinema Brasileiro">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#b03a2e,#922b21);">Direito e Cinema Brasileiro</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Direito e Cinema Brasileiro</div>
+          <div class="book-author">LESBON</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-portuguesa.html" title="Tira-teimas da língua portuguesa">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#d4ac0d,#b7950b);">Tira-teimas da Língua Portuguesa</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Tira-teimas da língua portuguesa</div>
+          <div class="book-author">J. Milton Gonçalves</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-cinema-brasileiro.html" title="Nova história do cinema brasileiro">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#1c1c1c,#3d3d3d);">Nova História do Cinema Brasileiro</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Nova história do cinema brasileiro — Vol. 1</div>
+          <div class="book-author">SESC</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-paul-emily.html" title="O cinema no século">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#27ae60,#1e8449);">Paul Emil Salgome</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">O cinema no século</div>
+          <div class="book-author">Paul Emil Salgome</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- BIOGRAFIA -->
+  <section class="section" id="biografia">
+    <div class="section-header">
+      <h2 class="section-title">Biografia</h2>
+      <a href="#" class="section-link">Ver mais →</a>
+    </div>
+    <div class="book-grid">
+
+      <a class="book-card" href="livro-jo-soares.html" title="O Livro de Jô">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#1a1a1a,#000);">O Livro de Jô</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">O Livro de Jô: Uma autobiografia desautorizada</div>
+          <div class="book-author">Jô Soares</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-jo-soares-2.html" title="O Livro de Jô — Vol. 2">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-new">Novo</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#145a32,#1e8449);">O Livro de Jô Vol. 2</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">O Livro de Jô — Vol. 2</div>
+          <div class="book-author">Jô Soares</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-churchill.html" title="Deus e Churchill">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#2e4057,#048a81);">Deus e Churchill</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Deus e Churchill</div>
+          <div class="book-author">Jonathan Sandys</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-malala.html" title="Eu sou Malala">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-hot">Popular</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#6c3483,#9b59b6);">Eu sou Malala</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Eu sou Malala</div>
+          <div class="book-author">Malala Yousafzai</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-padre-cicero.html" title="Padre Cícero">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#784212,#a04000);">Padre Cícero</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Padre Cícero</div>
+          <div class="book-author">Lira Neto</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-zelia.html" title="Anarquistas, graças a Deus">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#c0392b,#8e1a1a);">Anarquistas, graças a Deus</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Anarquistas, graças a Deus</div>
+          <div class="book-author">Zélia Gattai</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-marichele.html" title="Marichele">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#e67e22,#ca6f1e);">Marichele</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Marichele</div>
+          <div class="book-author">Mario Guraldes</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-elis.html" title="Elis — Uma biografia">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#922b21,#c0392b);">Elis</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Elis — Uma biografia</div>
+          <div class="book-author">Arthur de Faria</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-steve-jobs.html" title="Steve Jobs">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-hot">Popular</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#2c3e50,#4a6fa5);">Steve Jobs</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Steve Jobs</div>
+          <div class="book-author">Walter Isaacson</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- LITERATURA -->
+  <section class="section" id="literatura">
+    <div class="section-header">
+      <h2 class="section-title">Literatura</h2>
+      <a href="#" class="section-link">Ver mais →</a>
+    </div>
+    <div class="book-grid">
+
+      <a class="book-card" href="livro-cem-anos.html" title="Cem Anos de Solidão">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#1a5276,#2874a6);">Cem Anos de Solidão</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Cem Anos de Solidão</div>
+          <div class="book-author">Gabriel García Márquez</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-grande-sertao.html" title="Grande Sertão: Veredas">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-new">Novo</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#4a235a,#7d3c98);">Grande Sertão: Veredas</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Grande Sertão: Veredas</div>
+          <div class="book-author">João Guimarães Rosa</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-capitaes-areia.html" title="Capitães da Areia">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#1e3a5f,#154360);">Capitães da Areia</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Capitães da Areia</div>
+          <div class="book-author">Jorge Amado</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-senhor-aneis.html" title="O Senhor dos Anéis">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-hot">Popular</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#1b4332,#2d6a4f);">O Senhor dos Anéis</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">O Senhor dos Anéis</div>
+          <div class="book-author">J.R.R. Tolkien</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-1984.html" title="1984">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#1c1c1c,#444);">1984</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">1984</div>
+          <div class="book-author">George Orwell</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-dom-casmurro.html" title="Dom Casmurro">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#7d6608,#9a7d0a);">Dom Casmurro</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Dom Casmurro</div>
+          <div class="book-author">Machado de Assis</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- TECNOLOGIA -->
+  <section class="section" id="tecnologia">
+    <div class="section-header">
+      <h2 class="section-title">Tecnologia</h2>
+      <a href="#" class="section-link">Ver mais →</a>
+    </div>
+    <div class="book-grid">
+
+      <a class="book-card" href="livro-clean-code.html" title="Código Limpo">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-hot">Popular</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#17202a,#2c3e50);">Código Limpo</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Código Limpo</div>
+          <div class="book-author">Robert C. Martin</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-python.html" title="Python para Análise de Dados">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#154360,#1a5276);">Python para Análise de Dados</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Python para Análise de Dados</div>
+          <div class="book-author">Wes McKinney</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-ia.html" title="Inteligência Artificial">
+        <div class="book-cover-wrap">
+          <span class="book-badge badge-new">Novo</span>
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#0b3d91,#1565c0);">Inteligência Artificial</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Inteligência Artificial: Uma Abordagem Moderna</div>
+          <div class="book-author">Russell & Norvig</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-ux.html" title="UX Design">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#4a235a,#6c3483);">UX Design</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">UX Design: Guia Definitivo</div>
+          <div class="book-author">Will Grant</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-devops.html" title="DevOps na Prática">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#145a32,#1e8449);">DevOps na Prática</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">DevOps na Prática</div>
+          <div class="book-author">Danilo Sato</div>
+        </div>
+      </a>
+
+      <a class="book-card" href="livro-seguranca.html" title="Segurança em Computação">
+        <div class="book-cover-wrap">
+          <div class="book-cover-placeholder" style="background:linear-gradient(135deg,#922b21,#c0392b);">Segurança em Computação</div>
+          <div class="book-overlay"><span class="book-overlay-btn">Ver livro</span></div>
+        </div>
+        <div class="book-info">
+          <div class="book-title">Segurança em Computação</div>
+          <div class="book-author">Stallings & Brown</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>BSP Digital</strong> — Todos os direitos reservados &copy; 2025</p>
+</footer>
+
 </body>
 </html>
