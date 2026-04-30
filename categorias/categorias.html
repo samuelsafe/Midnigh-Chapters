@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Categorias — BSP Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f5f2ee;
+      --surface:   #f5f2ee;
+      --ink:       #1a1410;
+      --ink-muted: #6b5f54;
+      --accent:    #c0392b;
+      --accent-dk: #96281b;
+      --border:    #e0d9d2;
+      --card-bg:   #ede9e4;
+      --font-d:    'Playfair Display', Georgia, serif;
+      --font-b:    'DM Sans', sans-serif;
+      --radius:    10px;
+      --transition: .22s cubic-bezier(.4,0,.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-b);
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(1rem,5vw,3rem);
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-family: var(--font-d);
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -.03em;
+    }
+    .logo span { color: var(--accent); }
+    nav { display: flex; gap: .4rem; align-items: center; }
+    nav a {
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: .38rem .75rem;
+      border-radius: 999px;
+      transition: background var(--transition), color var(--transition);
+    }
+    nav a:hover { background: var(--card-bg); color: var(--ink); }
+    nav a.active { color: var(--accent); font-weight: 600; }
+    .nav-cta {
+      background: var(--accent) !important;
+      color: #fff !important;
+    }
+    .nav-cta:hover { background: var(--accent-dk) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      padding: clamp(2.5rem,6vw,5rem) clamp(1rem,5vw,4rem) clamp(2rem,5vw,4rem);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent, transparent 36px,
+        rgba(255,255,255,.018) 36px, rgba(255,255,255,.018) 72px
+      );
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 20% 50%, rgba(192,57,43,.25) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 30%, rgba(44,62,80,.4) 0%, transparent 60%);
+    }
+    .hero-inner { position: relative; z-index: 2; }
+    .hero-tag {
+      display: inline-block;
+      font-size: .68rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: .22rem .85rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: var(--font-d);
+      font-size: clamp(2rem,5vw,3.2rem);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -.025em;
+      line-height: 1.1;
+      margin-bottom: .75rem;
+    }
+    .hero p {
+      font-size: clamp(.88rem,2vw,1rem);
+      color: rgba(255,255,255,.55);
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    /* Search bar */
+    .search-wrap {
+      display: flex;
+      max-width: 500px;
+      margin: 0 auto;
+      background: rgba(255,255,255,.08);
+      border: 1.5px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .search-wrap:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(192,57,43,.2);
+    }
+    .search-wrap input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      padding: .75rem 1.25rem;
+      font-family: var(--font-b);
+      font-size: .88rem;
+      color: #fff;
+    }
+    .search-wrap input::placeholder { color: rgba(255,255,255,.4); }
+    .search-wrap button {
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      padding: 0 1.25rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      transition: background var(--transition);
+    }
+    .search-wrap button:hover { background: var(--accent-dk); }
+
+    /* Count badge */
+    .hero-count {
+      font-size: .75rem;
+      color: rgba(255,255,255,.35);
+      margin-top: 1rem;
+      letter-spacing: .04em;
+    }
+    .hero-count strong { color: rgba(255,255,255,.6); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: clamp(2rem,5vw,4rem) clamp(1rem,5vw,4rem);
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-right: .25rem;
+    }
+    .filter-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: .38rem .9rem;
+      font-family: var(--font-b);
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .filter-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+    /* ── SECTION ANCHOR ── */
+    .section-group { margin-bottom: clamp(2.5rem,5vw,4rem); }
+    .section-group-title {
+      font-family: var(--font-d);
+      font-size: clamp(1.1rem,2.5vw,1.4rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+      padding-bottom: .75rem;
+      border-bottom: 2px solid var(--ink);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .section-group-title span {
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-family: var(--font-b);
+      margin-left: auto;
+    }
+
+    /* ── CATEGORY GRID ── */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: clamp(.6rem,1.5vw,1rem);
+    }
+
+    /* ── CATEGORY CARD ── */
+    .cat-card {
+      background: var(--card-bg);
+      border: 1.5px solid transparent;
+      border-radius: var(--radius);
+      padding: 1.25rem 1.1rem 1rem;
+      text-decoration: none;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+    }
+    .cat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--cat-color, var(--accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition);
+    }
+    .cat-card:hover {
+      border-color: var(--cat-color, var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    }
+    .cat-card:hover::before { transform: scaleX(1); }
+
+    .cat-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+      margin-bottom: .1rem;
+    }
+    .cat-name {
+      font-family: var(--font-d);
+      font-size: .92rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+    .cat-count {
+      font-size: .72rem;
+      color: var(--ink-muted);
+      font-weight: 400;
+    }
+    .cat-arrow {
+      position: absolute;
+      bottom: .9rem;
+      right: .9rem;
+      color: var(--cat-color, var(--accent));
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity var(--transition), transform var(--transition);
+      font-size: .9rem;
+    }
+    .cat-card:hover .cat-arrow { opacity: 1; transform: translateX(0); }
+
+    /* ── NO RESULTS ── */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--ink-muted);
+    }
+    .no-results.show { display: block; }
+    .no-results p { font-size: 1rem; margin-top: .5rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,.45);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: .78rem;
+      margin-top: 2rem;
+    }
+    footer strong { color: #fff; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav .hide-sm { display: none; }
+      .cat-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    }
+    @media (min-width: 900px) {
+      .cat-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    }
+
+    /* ── FADE IN ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cat-card { animation: fadeUp .4s ease both; }
+
+    /* hidden by filter */
+    .cat-card.hidden { display: none; }
+    .section-group.hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="biblioteca.html"><span>b</span>sp digital</a>
+  <nav>
+    <a href="../index.html" class="hide-sm">Início</a>
+    <a href="categorias.html" class="active hide-sm">Categorias</a>
+    <a href="#" class="hide-sm">Minha Estante</a>
+    <a href="identificar-se.html" class="nav-cta">Identificar-se</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Acervo Completo</div>
+    <h1>Explore por Categorias</h1>
+    <p>De clássicos da literatura a guias técnicos — encontre exatamente o que procura.</p>
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Buscar categoria..." oninput="filterAll()" autocomplete="off"/>
+      <button aria-label="Buscar">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+    <div class="hero-count">Navegue por <strong>60+</strong> categorias disponíveis</div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <span class="filter-label">Filtrar:</span>
+    <button class="filter-btn active" onclick="setFilter('todos', this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter('literatura', this)">Literatura</button>
+    <button class="filter-btn" onclick="setFilter('ciencias', this)">Ciências</button>
+    <button class="filter-btn" onclick="setFilter('humanas', this)">Humanas</button>
+    <button class="filter-btn" onclick="setFilter('artes', this)">Artes</button>
+    <button class="filter-btn" onclick="setFilter('negocios', this)">Negócios</button>
+    <button class="filter-btn" onclick="setFilter('tecnologia', this)">Tecnologia</button>
+    <button class="filter-btn" onclick="setFilter('saude', this)">Saúde</button>
+    <button class="filter-btn" onclick="setFilter('infantil', this)">Infantil & Jovem</button>
+  </div>
+
+  <!-- NO RESULTS -->
+  <div class="no-results" id="no-results">
+    <div style="font-size:2.5rem">📚</div>
+    <p>Nenhuma categoria encontrada para "<strong id="no-results-term"></strong>".</p>
+  </div>
+
+  <!-- ── LITERATURA & FICÇÃO ── -->
+  <div class="section-group" data-group="literatura">
+    <h2 class="section-group-title">📖 Literatura &amp; Ficção <span>12 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#2980b9" data-group="literatura" data-name="romance literatura" data-delay="1">
+        <div class="cat-icon">💕</div>
+        <div class="cat-name">Romance</div>
+        <div class="cat-count">1.240 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#8e44ad" data-group="literatura" data-name="ficção científica" data-delay="2">
+        <div class="cat-icon">🚀</div>
+        <div class="cat-name">Ficção Científica</div>
+        <div class="cat-count">870 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2c3e50" data-group="literatura" data-name="fantasia">
+        <div class="cat-icon">🧙</div>
+        <div class="cat-name">Fantasia</div>
+        <div class="cat-count">760 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#c0392b" data-group="literatura" data-name="suspense thriller mistério">
+        <div class="cat-icon">🔍</div>
+        <div class="cat-name">Suspense &amp; Thriller</div>
+        <div class="cat-count">940 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#1a5276" data-group="literatura" data-name="literatura brasileira">
+        <div class="cat-icon">🇧🇷</div>
+        <div class="cat-name">Literatura Brasileira</div>
+        <div class="cat-count">1.580 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#117a65" data-group="literatura" data-name="literatura estrangeira clássicos">
+        <div class="cat-icon">🌍</div>
+        <div class="cat-name">Literatura Estrangeira</div>
+        <div class="cat-count">2.100 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#784212" data-group="literatura" data-name="contos crônicas">
+        <div class="cat-icon">📜</div>
+        <div class="cat-name">Contos &amp; Crônicas</div>
+        <div class="cat-count">430 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#7f8c8d" data-group="literatura" data-name="poesia poemas">
+        <div class="cat-icon">🎭</div>
+        <div class="cat-name">Poesia</div>
+        <div class="cat-count">380 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e67e22" data-group="literatura" data-name="terror horror">
+        <div class="cat-icon">👻</div>
+        <div class="cat-name">Terror &amp; Horror</div>
+        <div class="cat-count">510 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#c0392b" data-group="literatura" data-name="policial detetive crime">
+        <div class="cat-icon">🕵️</div>
+        <div class="cat-name">Policial</div>
+        <div class="cat-count">620 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#1abc9c" data-group="literatura" data-name="aventura ação">
+        <div class="cat-icon">⚔️</div>
+        <div class="cat-name">Aventura &amp; Ação</div>
+        <div class="cat-count">480 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#9b59b6" data-group="literatura" data-name="distopia ucronias">
+        <div class="cat-icon">🌑</div>
+        <div class="cat-name">Distopia</div>
+        <div class="cat-count">210 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── CIÊNCIAS ── -->
+  <div class="section-group" data-group="ciencias">
+    <h2 class="section-group-title">🔬 Ciências <span>8 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#2980b9" data-group="ciencias" data-name="física matemática">
+        <div class="cat-icon">🔭</div>
+        <div class="cat-name">Física &amp; Astronomia</div>
+        <div class="cat-count">390 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#27ae60" data-group="ciencias" data-name="biologia natureza">
+        <div class="cat-icon">🧬</div>
+        <div class="cat-name">Biologia &amp; Natureza</div>
+        <div class="cat-count">470 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e74c3c" data-group="ciencias" data-name="química">
+        <div class="cat-icon">⚗️</div>
+        <div class="cat-name">Química</div>
+        <div class="cat-count">220 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#f39c12" data-group="ciencias" data-name="matemática">
+        <div class="cat-icon">📐</div>
+        <div class="cat-name">Matemática</div>
+        <div class="cat-count">310 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#16a085" data-group="ciencias" data-name="meio ambiente ecologia sustentabilidade">
+        <div class="cat-icon">🌿</div>
+        <div class="cat-name">Meio Ambiente</div>
+        <div class="cat-count">280 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2c3e50" data-group="ciencias" data-name="geologia geografia">
+        <div class="cat-icon">🌋</div>
+        <div class="cat-name">Geologia &amp; Geografia</div>
+        <div class="cat-count">190 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#8e44ad" data-group="ciencias" data-name="neurociência cérebro">
+        <div class="cat-icon">🧠</div>
+        <div class="cat-name">Neurociência</div>
+        <div class="cat-count">240 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e67e22" data-group="ciencias" data-name="astronomia espaço cosmos">
+        <div class="cat-icon">🪐</div>
+        <div class="cat-name">Cosmologia</div>
+        <div class="cat-count">160 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── HUMANAS ── -->
+  <div class="section-group" data-group="humanas">
+    <h2 class="section-group-title">🏛️ Ciências Humanas <span>10 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#c0392b" data-group="humanas" data-name="história">
+        <div class="cat-icon">📜</div>
+        <div class="cat-name">História</div>
+        <div class="cat-count">1.820 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2980b9" data-group="humanas" data-name="filosofia">
+        <div class="cat-icon">🤔</div>
+        <div class="cat-name">Filosofia</div>
+        <div class="cat-count">730 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#27ae60" data-group="humanas" data-name="sociologia sociedade">
+        <div class="cat-icon">👥</div>
+        <div class="cat-name">Sociologia</div>
+        <div class="cat-count">510 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e67e22" data-group="humanas" data-name="política ciência política">
+        <div class="cat-icon">🏛️</div>
+        <div class="cat-name">Política</div>
+        <div class="cat-count">890 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#8e44ad" data-group="humanas" data-name="psicologia comportamento">
+        <div class="cat-icon">🧩</div>
+        <div class="cat-name">Psicologia</div>
+        <div class="cat-count">1.020 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#1abc9c" data-group="humanas" data-name="antropologia cultura">
+        <div class="cat-icon">🗿</div>
+        <div class="cat-name">Antropologia</div>
+        <div class="cat-count">340 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#f39c12" data-group="humanas" data-name="religião espiritualidade teologia">
+        <div class="cat-icon">✝️</div>
+        <div class="cat-name">Religião &amp; Espiritualidade</div>
+        <div class="cat-count">680 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2c3e50" data-group="humanas" data-name="direito legislação jurídico">
+        <div class="cat-icon">⚖️</div>
+        <div class="cat-name">Direito</div>
+        <div class="cat-count">920 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e74c3c" data-group="humanas" data-name="linguística língua gramática">
+        <div class="cat-icon">🗣️</div>
+        <div class="cat-name">Linguística</div>
+        <div class="cat-count">310 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#117a65" data-group="humanas" data-name="educação pedagogia ensino">
+        <div class="cat-icon">🎓</div>
+        <div class="cat-name">Educação &amp; Pedagogia</div>
+        <div class="cat-count">770 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── ARTES ── -->
+  <div class="section-group" data-group="artes">
+    <h2 class="section-group-title">🎨 Artes &amp; Cultura <span>8 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#e74c3c" data-group="artes" data-name="artes visuais pintura escultura">
+        <div class="cat-icon">🎨</div>
+        <div class="cat-name">Artes Visuais</div>
+        <div class="cat-count">560 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#9b59b6" data-group="artes" data-name="música teoria musical">
+        <div class="cat-icon">🎵</div>
+        <div class="cat-name">Música</div>
+        <div class="cat-count">490 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#f39c12" data-group="artes" data-name="cinema audiovisual">
+        <div class="cat-icon">🎬</div>
+        <div class="cat-name">Cinema</div>
+        <div class="cat-count">380 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#1abc9c" data-group="artes" data-name="fotografia">
+        <div class="cat-icon">📷</div>
+        <div class="cat-name">Fotografia</div>
+        <div class="cat-count">230 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e67e22" data-group="artes" data-name="design gráfico">
+        <div class="cat-icon">✏️</div>
+        <div class="cat-name">Design</div>
+        <div class="cat-count">410 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#c0392b" data-group="artes" data-name="arquitetura urbanismo">
+        <div class="cat-icon">🏛️</div>
+        <div class="cat-name">Arquitetura</div>
+        <div class="cat-count">290 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2980b9" data-group="artes" data-name="teatro artes cênicas">
+        <div class="cat-icon">🎭</div>
+        <div class="cat-name">Teatro</div>
+        <div class="cat-count">170 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#27ae60" data-group="artes" data-name="dança">
+        <div class="cat-icon">💃</div>
+        <div class="cat-name">Dança</div>
+        <div class="cat-count">120 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── NEGÓCIOS ── -->
+  <div class="section-group" data-group="negocios">
+    <h2 class="section-group-title">💼 Negócios &amp; Carreira <span>9 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#27ae60" data-group="negocios" data-name="administração gestão">
+        <div class="cat-icon">💼</div>
+        <div class="cat-name">Administração</div>
+        <div class="cat-count">850 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#f39c12" data-group="negocios" data-name="empreendedorismo startup">
+        <div class="cat-icon">🚀</div>
+        <div class="cat-name">Empreendedorismo</div>
+        <div class="cat-count">720 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2980b9" data-group="negocios" data-name="economia finanças">
+        <div class="cat-icon">📈</div>
+        <div class="cat-name">Economia &amp; Finanças</div>
+        <div class="cat-count">930 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e74c3c" data-group="negocios" data-name="marketing vendas">
+        <div class="cat-icon">📣</div>
+        <div class="cat-name">Marketing &amp; Vendas</div>
+        <div class="cat-count">640 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#8e44ad" data-group="negocios" data-name="liderança gestão pessoas">
+        <div class="cat-icon">🏆</div>
+        <div class="cat-name">Liderança</div>
+        <div class="cat-count">580 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#16a085" data-group="negocios" data-name="investimentos bolsa renda variável">
+        <div class="cat-icon">💰</div>
+        <div class="cat-name">Investimentos</div>
+        <div class="cat-count">430 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#c0392b" data-group="negocios" data-name="recursos humanos rh">
+        <div class="cat-icon">👔</div>
+        <div class="cat-name">Recursos Humanos</div>
+        <div class="cat-count">310 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2c3e50" data-group="negocios" data-name="contabilidade finanças pessoais">
+        <div class="cat-icon">🧾</div>
+        <div class="cat-name">Contabilidade</div>
+        <div class="cat-count">260 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e67e22" data-group="negocios" data-name="coaching desenvolvimento pessoal">
+        <div class="cat-icon">🎯</div>
+        <div class="cat-name">Desenvolvimento Pessoal</div>
+        <div class="cat-count">1.100 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── TECNOLOGIA ── -->
+  <div class="section-group" data-group="tecnologia">
+    <h2 class="section-group-title">💻 Tecnologia <span>8 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#2980b9" data-group="tecnologia" data-name="programação desenvolvimento software">
+        <div class="cat-icon">💻</div>
+        <div class="cat-name">Programação</div>
+        <div class="cat-count">1.340 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#8e44ad" data-group="tecnologia" data-name="inteligência artificial machine learning">
+        <div class="cat-icon">🤖</div>
+        <div class="cat-name">Inteligência Artificial</div>
+        <div class="cat-count">510 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#c0392b" data-group="tecnologia" data-name="segurança cibernética hacking">
+        <div class="cat-icon">🔐</div>
+        <div class="cat-name">Segurança Digital</div>
+        <div class="cat-count">380 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#27ae60" data-group="tecnologia" data-name="banco de dados sql">
+        <div class="cat-icon">🗄️</div>
+        <div class="cat-name">Banco de Dados</div>
+        <div class="cat-count">290 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e67e22" data-group="tecnologia" data-name="design ux ui experiência usuário">
+        <div class="cat-icon">🎨</div>
+        <div class="cat-name">UX &amp; Design Digital</div>
+        <div class="cat-count">420 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#1abc9c" data-group="tecnologia" data-name="redes internet cloud">
+        <div class="cat-icon">☁️</div>
+        <div class="cat-name">Cloud &amp; Redes</div>
+        <div class="cat-count">260 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2c3e50" data-group="tecnologia" data-name="devops infraestrutura">
+        <div class="cat-icon">⚙️</div>
+        <div class="cat-name">DevOps</div>
+        <div class="cat-count">190 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#f39c12" data-group="tecnologia" data-name="games jogos desenvolvimento">
+        <div class="cat-icon">🎮</div>
+        <div class="cat-name">Desenvolvimento de Games</div>
+        <div class="cat-count">230 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── SAÚDE ── -->
+  <div class="section-group" data-group="saude">
+    <h2 class="section-group-title">🏥 Saúde &amp; Bem-estar <span>7 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#e74c3c" data-group="saude" data-name="medicina saúde">
+        <div class="cat-icon">🏥</div>
+        <div class="cat-name">Medicina</div>
+        <div class="cat-count">780 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#27ae60" data-group="saude" data-name="nutrição alimentação dieta">
+        <div class="cat-icon">🥗</div>
+        <div class="cat-name">Nutrição &amp; Alimentação</div>
+        <div class="cat-count">540 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#9b59b6" data-group="saude" data-name="saúde mental psiquiatria">
+        <div class="cat-icon">🧘</div>
+        <div class="cat-name">Saúde Mental</div>
+        <div class="cat-count">620 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#f39c12" data-group="saude" data-name="esporte fitness treino">
+        <div class="cat-icon">🏋️</div>
+        <div class="cat-name">Esportes &amp; Fitness</div>
+        <div class="cat-count">390 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#16a085" data-group="saude" data-name="meditação mindfulness bem estar">
+        <div class="cat-icon">🌸</div>
+        <div class="cat-name">Meditação &amp; Mindfulness</div>
+        <div class="cat-count">280 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#e67e22" data-group="saude" data-name="farmácia farmacologia">
+        <div class="cat-icon">💊</div>
+        <div class="cat-name">Farmácia</div>
+        <div class="cat-count">210 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#c0392b" data-group="saude" data-name="enfermagem cuidados">
+        <div class="cat-icon">🩺</div>
+        <div class="cat-name">Enfermagem</div>
+        <div class="cat-count">340 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── INFANTIL ── -->
+  <div class="section-group" data-group="infantil">
+    <h2 class="section-group-title">🧸 Infantil &amp; Jovem <span>5 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#e74c3c" data-group="infantil" data-name="infantil bebês criança">
+        <div class="cat-icon">🧸</div>
+        <div class="cat-name">Infantil (0–6 anos)</div>
+        <div class="cat-count">420 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#f39c12" data-group="infantil" data-name="criança juvenil">
+        <div class="cat-icon">📚</div>
+        <div class="cat-name">Infantojuvenil (7–12 anos)</div>
+        <div class="cat-count">590 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#9b59b6" data-group="infantil" data-name="jovem adulto teen adolescente">
+        <div class="cat-icon">🎒</div>
+        <div class="cat-name">Jovem Adulto</div>
+        <div class="cat-count">680 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#27ae60" data-group="infantil" data-name="educativo didático escola">
+        <div class="cat-icon">✏️</div>
+        <div class="cat-name">Livros Educativos</div>
+        <div class="cat-count">310 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2980b9" data-group="infantil" data-name="hq quadrinhos mangá gibi">
+        <div class="cat-icon">💬</div>
+        <div class="cat-name">HQs &amp; Quadrinhos</div>
+        <div class="cat-count">490 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── OUTROS ── -->
+  <div class="section-group" data-group="outros">
+    <h2 class="section-group-title">🌐 Outros <span>6 categorias</span></h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="--cat-color:#e67e22" data-group="outros" data-name="culinária gastronomia receitas">
+        <div class="cat-icon">🍳</div>
+        <div class="cat-name">Culinária &amp; Gastronomia</div>
+        <div class="cat-count">540 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#27ae60" data-group="outros" data-name="viagem turismo guia">
+        <div class="cat-icon">✈️</div>
+        <div class="cat-name">Viagem &amp; Turismo</div>
+        <div class="cat-count">310 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#c0392b" data-group="outros" data-name="autoajuda motivação">
+        <div class="cat-icon">⭐</div>
+        <div class="cat-name">Autoajuda</div>
+        <div class="cat-count">890 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#8e44ad" data-group="outros" data-name="esoterismo ocultismo astrologia">
+        <div class="cat-icon">🔮</div>
+        <div class="cat-name">Esoterismo</div>
+        <div class="cat-count">240 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#2980b9" data-group="outros" data-name="idiomas línguas inglês espanhol">
+        <div class="cat-icon">🌐</div>
+        <div class="cat-name">Idiomas</div>
+        <div class="cat-count">410 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+      <a class="cat-card" href="#" style="--cat-color:#f39c12" data-group="outros" data-name="humor comédia piadas">
+        <div class="cat-icon">😂</div>
+        <div class="cat-name">Humor</div>
+        <div class="cat-count">180 títulos</div>
+        <div class="cat-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>BSP Digital</strong> — Todos os direitos reservados &copy; 2025</p>
+</footer>
+
+<script>
+  // Apply stagger animation delays
+  document.querySelectorAll('.cat-card').forEach((card, i) => {
+    card.style.animationDelay = (i % 12) * 0.04 + 's';
+  });
+
+  let activeFilter = 'todos';
+
+  function setFilter(group, btn) {
+    activeFilter = group;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterAll();
+  }
+
+  function filterAll() {
+    const term = document.getElementById('search-input').value.toLowerCase().trim();
+    let anyVisible = false;
+
+    document.querySelectorAll('.section-group').forEach(section => {
+      const sGroup = section.dataset.group;
+      let sectionHasVisible = false;
+
+      section.querySelectorAll('.cat-card').forEach(card => {
+        const name = (card.dataset.name || '').toLowerCase();
+        const groupMatch = activeFilter === 'todos' || card.dataset.group === activeFilter;
+        const searchMatch = !term || name.includes(term);
+        const show = groupMatch && searchMatch;
+
+        card.classList.toggle('hidden', !show);
+        if (show) { sectionHasVisible = true; anyVisible = true; }
+      });
+
+      // hide whole section if nothing visible
+      const groupMatch = activeFilter === 'todos' || sGroup === activeFilter;
+      section.classList.toggle('hidden', !sectionHasVisible || !groupMatch);
+    });
+
+    const noRes = document.getElementById('no-results');
+    noRes.classList.toggle('show', !anyVisible);
+    document.getElementById('no-results-term').textContent =
+      document.getElementById('search-input').value;
+  }
+</script>
+</body>
+</html>
