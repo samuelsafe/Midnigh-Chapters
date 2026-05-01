@@ -53,7 +53,7 @@
       font-family: var(--font-display);
       font-size: 1.5rem;
       font-weight: 900;
-      color: var(--ink);
+      color: var(--color0);
       text-decoration: none;
       letter-spacing: -0.03em;
     }
@@ -352,7 +352,7 @@
 
     /* ── FOOTER ── */
     footer {
-      background: var(--ink);
+      background: var(--color1);
       color: rgba(255,255,255,0.5);
       text-align: center;
       padding: 2rem 1rem;
