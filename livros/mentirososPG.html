@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Uma história do samba — BSP Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#f5f2ee; --surface:#ffffff; --card:#ede9e4; --ink:#1a1410;
+      --ink-muted:#6b5f54; --accent:#c0392b; --accent-dk:#96281b;
+      --accent-lt:#fdf0ee; --border:#e0d9d2; --gold:#b8860b;
+      --font-d:'Playfair Display',Georgia,serif; --font-b:'DM Sans',sans-serif;
+      --radius:10px; --tr:.22s cubic-bezier(.4,0,.2,1);
+      --shadow:0 4px 16px rgba(0,0,0,.09); --shadow-lg:0 12px 40px rgba(0,0,0,.14);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:var(--font-b); background:var(--bg); color:var(--ink); min-height:100vh; font-size:15px; line-height:1.6; }
+
+    header { background:var(--surface); border-bottom:1px solid var(--border); height:60px; display:flex; align-items:center; padding:0 clamp(1rem,5vw,3rem); justify-content:space-between; position:sticky; top:0; z-index:100; }
+    .logo { font-family:var(--font-d); font-size:1.4rem; font-weight:900; color:var(--ink); text-decoration:none; letter-spacing:-.03em; }
+    .logo span { color:var(--accent); }
+    nav { display:flex; gap:.4rem; align-items:center; }
+    nav a { font-size:.82rem; font-weight:500; color:var(--ink-muted); text-decoration:none; padding:.38rem .75rem; border-radius:999px; transition:background var(--tr),color var(--tr); position:relative; }
+    nav a:hover { background:var(--card); color:var(--ink); }
+    .nav-cta { background:var(--accent)!important; color:#fff!important; }
+    .nav-cta:hover { background:var(--accent-dk)!important; }
+    .nav-badge { position:absolute; top:-4px; right:-2px; background:var(--accent); color:#fff; font-size:.55rem; font-weight:700; width:16px; height:16px; border-radius:50%; display:none; align-items:center; justify-content:center; }
+    .nav-badge.show { display:flex; }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(80px); background:var(--ink); color:#fff; font-family:var(--font-b); font-size:.85rem; font-weight:500; padding:.75rem 1.5rem; border-radius:999px; box-shadow:0 8px 32px rgba(0,0,0,.25); z-index:999; transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s; opacity:0; display:flex; align-items:center; gap:.6rem; white-space:nowrap; pointer-events:none; }
+    .toast.show { transform:translateX(-50%) translateY(0); opacity:1; pointer-events:auto; }
+    .toast a { color:#86efac; text-decoration:none; font-weight:600; }
+    .toast a:hover { text-decoration:underline; }
+    .toast-icon { color:#86efac; }
+
+    .breadcrumb { max-width:1200px; margin:0 auto; padding:1rem clamp(1rem,5vw,3rem) 0; display:flex; align-items:center; gap:.4rem; font-size:.75rem; color:var(--ink-muted); flex-wrap:wrap; }
+    .breadcrumb a { color:var(--ink-muted); text-decoration:none; transition:color var(--tr); }
+    .breadcrumb a:hover { color:var(--accent); }
+    .breadcrumb .sep { opacity:.4; }
+    .breadcrumb .current { color:var(--ink); font-weight:500; }
+
+    .book-hero { max-width:1200px; margin:0 auto; padding:2rem clamp(1rem,5vw,3rem) 3rem; display:grid; grid-template-columns:auto 1fr; gap:clamp(2rem,5vw,4rem); align-items:start; }
+    .cover-col { display:flex; flex-direction:column; align-items:center; gap:1.25rem; position:sticky; top:80px; }
+    .cover-wrap { width:clamp(180px,22vw,260px); aspect-ratio:2/3; border-radius:6px; overflow:hidden; box-shadow:-6px 6px 0 0 rgba(0,0,0,.08),var(--shadow-lg); background:linear-gradient(135deg,#7b0000,#c0392b); flex-shrink:0; animation:coverReveal .7s cubic-bezier(.22,1,.36,1) both; }
+    @keyframes coverReveal { from{opacity:0;transform:translateY(24px) rotate(-2deg)} to{opacity:1;transform:none} }
+    .cover-placeholder { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.5rem; text-align:center; font-family:var(--font-d); }
+    .cover-placeholder .cp-title { font-size:1.1rem; font-weight:900; color:#fff; line-height:1.2; margin-bottom:.75rem; }
+    .cover-placeholder .cp-diamond { font-size:2.5rem; opacity:.3; margin-bottom:.75rem; }
+    .cover-placeholder .cp-author { font-size:.7rem; color:rgba(255,255,255,.6); letter-spacing:.1em; text-transform:uppercase; }
+
+    .stars { display:flex; gap:.2rem; align-items:center; }
+    .star { font-size:1.1rem; color:var(--gold); }
+    .star.empty { color:var(--border); }
+    .rating-val { font-size:.85rem; font-weight:500; color:var(--ink); margin-left:.35rem; }
+    .rating-count { font-size:.75rem; color:var(--ink-muted); margin-left:.2rem; }
+
+    .cover-actions { display:flex; flex-direction:column; gap:.6rem; width:100%; }
+    .btn-read { display:flex; align-items:center; justify-content:center; gap:.5rem; background:var(--accent); color:#fff; border:none; border-radius:var(--radius); padding:.8rem 1rem; font-family:var(--font-b); font-size:.88rem; font-weight:500; cursor:pointer; text-decoration:none; transition:background var(--tr),transform var(--tr),box-shadow var(--tr); width:100%; }
+    .btn-read:hover { background:var(--accent-dk); transform:translateY(-2px); box-shadow:0 6px 18px rgba(192,57,43,.3); }
+    .btn-save { display:flex; align-items:center; justify-content:center; gap:.5rem; background:var(--card); color:var(--ink); border:1.5px solid var(--border); border-radius:var(--radius); padding:.75rem 1rem; font-family:var(--font-b); font-size:.88rem; font-weight:500; cursor:pointer; transition:all var(--tr); width:100%; }
+    .btn-save:hover { border-color:var(--ink); background:#e8e4de; }
+    .btn-save.saved { background:var(--accent-lt); border-color:var(--accent); color:var(--accent); }
+
+    .info-col { animation:fadeUp .5s .1s ease both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+
+    .book-category { display:inline-block; font-size:.7rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); border:1px solid var(--accent); padding:.2rem .75rem; border-radius:999px; margin-bottom:1rem; }
+    .book-title { font-family:var(--font-d); font-size:clamp(1.8rem,4vw,3rem); font-weight:900; line-height:1.08; letter-spacing:-.025em; margin-bottom:.6rem; }
+    .book-subtitle { font-family:var(--font-d); font-size:clamp(1rem,2vw,1.3rem); font-weight:400; font-style:italic; color:var(--ink-muted); margin-bottom:1.5rem; }
+
+    .specs { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:.75rem; margin-bottom:1.75rem; }
+    .spec-item { background:var(--card); border-radius:8px; padding:.75rem .9rem; border:1px solid var(--border); }
+    .spec-label { font-size:.68rem; font-weight:500; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-muted); margin-bottom:.25rem; }
+    .spec-val { font-size:.88rem; font-weight:500; color:var(--ink); line-height:1.3; }
+
+    .tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.5rem; }
+    .tag { font-size:.72rem; color:var(--ink-muted); background:var(--card); border:1px solid var(--border); padding:.25rem .7rem; border-radius:999px; cursor:pointer; text-decoration:none; transition:all var(--tr); }
+    .tag:hover { border-color:var(--accent); color:var(--accent); }
+
+    .share-row { display:flex; align-items:center; gap:.75rem; padding-top:1.25rem; border-top:1px solid var(--border); }
+    .share-label { font-size:.75rem; color:var(--ink-muted); }
+    .share-btn { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--card); border:1px solid var(--border); color:var(--ink-muted); cursor:pointer; text-decoration:none; font-size:.8rem; font-weight:700; transition:all var(--tr); }
+    .share-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+    .content-area { max-width:1200px; margin:0 auto; padding:0 clamp(1rem,5vw,3rem) 4rem; display:grid; grid-template-columns:1fr 300px; gap:3rem; align-items:start; }
+    .section-heading { font-family:var(--font-d); font-size:1.35rem; font-weight:700; letter-spacing:-.02em; margin-bottom:1.1rem; padding-bottom:.65rem; border-bottom:2px solid var(--ink); display:flex; align-items:center; gap:.5rem; }
+
+    .book-summary { margin-bottom:3rem; animation:fadeUp .5s .2s ease both; }
+    .summary-text { font-size:.95rem; line-height:1.85; color:var(--ink); }
+    .summary-text p+p { margin-top:1rem; }
+    .summary-text .drop-cap::first-letter { font-family:var(--font-d); font-size:3.5rem; font-weight:900; float:left; line-height:.75; margin:.08em .12em 0 0; color:var(--accent); }
+    .read-more-toggle { background:none; border:none; cursor:pointer; font-family:var(--font-b); font-size:.82rem; font-weight:500; color:var(--accent); padding:0; margin-top:.75rem; display:flex; align-items:center; gap:.3rem; }
+    .summary-extra { display:none; }
+    .summary-extra.open { display:block; margin-top:1rem; }
+
+    .author-section { margin-bottom:3rem; animation:fadeUp .5s .3s ease both; }
+    .author-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.75rem; display:flex; gap:1.5rem; align-items:flex-start; box-shadow:var(--shadow); }
+    .author-photo { width:90px; height:90px; border-radius:50%; flex-shrink:0; background:linear-gradient(135deg,#2c3e50,#4a6fa5); box-shadow:0 4px 12px rgba(0,0,0,.15); border:3px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-size:2rem; font-weight:900; color:#fff; }
+    .author-name { font-family:var(--font-d); font-size:1.1rem; font-weight:700; margin-bottom:.2rem; }
+    .author-title { font-size:.75rem; color:var(--accent); font-weight:500; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.65rem; }
+    .author-bio { font-size:.85rem; line-height:1.75; color:var(--ink-muted); }
+    .author-more { display:inline-block; margin-top:.75rem; font-size:.78rem; color:var(--accent); text-decoration:none; font-weight:500; border-bottom:1px solid transparent; transition:border-color var(--tr); }
+    .author-more:hover { border-color:var(--accent); }
+
+    .comments-section { animation:fadeUp .5s .4s ease both; }
+    .comment-form { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.5rem; margin-bottom:2rem; box-shadow:var(--shadow); }
+    .form-title-sm { font-family:var(--font-d); font-size:1rem; font-weight:700; margin-bottom:1rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-bottom:.75rem; }
+    .form-field { display:flex; flex-direction:column; gap:.35rem; }
+    .form-field label { font-size:.75rem; font-weight:500; color:var(--ink); }
+    .form-field input,.form-field textarea { background:var(--card); border:1.5px solid var(--border); border-radius:8px; padding:.65rem .9rem; font-family:var(--font-b); font-size:.88rem; color:var(--ink); outline:none; resize:vertical; transition:border-color var(--tr),box-shadow var(--tr); }
+    .form-field input::placeholder,.form-field textarea::placeholder { color:#b0a89e; }
+    .form-field input:focus,.form-field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(192,57,43,.1); }
+    .form-field textarea { min-height:100px; }
+    .star-picker { display:flex; gap:.3rem; }
+    .star-pick { font-size:1.4rem; cursor:pointer; color:var(--border); transition:color .15s,transform .15s; background:none; border:none; padding:0; line-height:1; }
+    .star-pick.active { color:var(--gold); }
+    .btn-comment { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:.72rem 1.5rem; font-family:var(--font-b); font-size:.88rem; font-weight:500; cursor:pointer; margin-top:.75rem; transition:background var(--tr),transform var(--tr); }
+    .btn-comment:hover { background:var(--accent-dk); transform:translateY(-1px); }
+
+    .comments-list { display:flex; flex-direction:column; gap:1.1rem; }
+    .comment-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.25rem 1.5rem; box-shadow:var(--shadow); animation:fadeUp .4s ease both; }
+    .comment-header { display:flex; align-items:center; gap:.75rem; margin-bottom:.75rem; }
+    .comment-avatar { width:38px; height:38px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-size:.95rem; font-weight:700; color:#fff; }
+    .comment-meta { flex:1; min-width:0; }
+    .comment-name { font-size:.88rem; font-weight:600; color:var(--ink); }
+    .comment-date { font-size:.72rem; color:var(--ink-muted); }
+    .comment-stars { display:flex; gap:.15rem; margin-left:auto; }
+    .comment-stars span { font-size:.85rem; }
+    .comment-text { font-size:.88rem; line-height:1.75; color:var(--ink); }
+    .comment-actions { display:flex; gap:1rem; margin-top:.75rem; padding-top:.6rem; border-top:1px solid var(--border); }
+    .comment-action-btn { background:none; border:none; cursor:pointer; font-family:var(--font-b); font-size:.75rem; color:var(--ink-muted); display:flex; align-items:center; gap:.3rem; padding:0; transition:color var(--tr); }
+    .comment-action-btn:hover { color:var(--accent); }
+    .comment-count { font-size:.75rem; font-weight:500; color:var(--ink-muted); margin-bottom:1rem; display:flex; align-items:center; gap:.5rem; }
+    .comment-count::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    .sidebar { display:flex; flex-direction:column; gap:1.5rem; }
+    .sidebar-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.25rem; box-shadow:var(--shadow); animation:fadeUp .5s .25s ease both; }
+    .sidebar-title { font-family:var(--font-d); font-size:.95rem; font-weight:700; margin-bottom:1rem; padding-bottom:.6rem; border-bottom:1px solid var(--border); }
+    .rating-big { text-align:center; margin-bottom:1rem; }
+    .rating-big .num { font-family:var(--font-d); font-size:3.5rem; font-weight:900; line-height:1; }
+    .rating-big .total { font-size:.75rem; color:var(--ink-muted); }
+    .rating-bars { display:flex; flex-direction:column; gap:.4rem; }
+    .rating-bar-row { display:flex; align-items:center; gap:.6rem; font-size:.75rem; color:var(--ink-muted); }
+    .rating-bar-track { flex:1; height:6px; background:var(--card); border-radius:999px; overflow:hidden; }
+    .rating-bar-fill { height:100%; border-radius:999px; background:var(--gold); }
+    .rating-bar-pct { width:28px; text-align:right; font-weight:500; color:var(--ink); }
+    .detail-list { display:flex; flex-direction:column; gap:.6rem; }
+    .detail-row { display:flex; justify-content:space-between; font-size:.82rem; gap:.5rem; }
+    .detail-key { color:var(--ink-muted); }
+    .detail-val { font-weight:500; text-align:right; }
+    .similar-list { display:flex; flex-direction:column; gap:.75rem; }
+    .similar-book { display:flex; gap:.75rem; align-items:center; text-decoration:none; color:inherit; padding:.5rem; border-radius:8px; transition:background var(--tr); }
+    .similar-book:hover { background:var(--card); }
+    .similar-cover { width:38px; height:56px; border-radius:4px; flex-shrink:0; background:linear-gradient(135deg,#2c3e50,#4a6fa5); box-shadow:-2px 2px 0 rgba(0,0,0,.1); }
+    .similar-cover.c2{background:linear-gradient(135deg,#145a32,#1e8449)} .similar-cover.c3{background:linear-gradient(135deg,#784212,#a04000)} .similar-cover.c4{background:linear-gradient(135deg,#4a235a,#7d3c98)}
+    .similar-title { font-size:.82rem; font-weight:600; line-height:1.3; font-family:var(--font-d); }
+    .similar-author { font-size:.72rem; color:var(--ink-muted); margin-top:.1rem; }
+
+    @media(max-width:900px){.book-hero{grid-template-columns:1fr}.cover-col{position:static;flex-direction:row;flex-wrap:wrap}.cover-wrap{width:clamp(130px,35vw,180px)}.cover-actions{flex-direction:row;flex:1;min-width:160px}.content-area{grid-template-columns:1fr}.sidebar{order:-1}.sidebar-card:not(:first-child){display:none}}
+    @media(max-width:600px){nav .hide-sm{display:none}.form-row{grid-template-columns:1fr}.author-card{flex-direction:column}.cover-col{flex-direction:column;align-items:center}.cover-actions{flex-direction:column;width:100%;max-width:260px}}
+  </style>
+</head>
+<body>
+
+<div class="toast" id="toast">
+  <svg class="toast-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">Livro salvo na sua estante!</span>
+  <a href="estante.html" id="toast-link">Ver estante →</a>
+</div>
+
+<header>
+  <a class="logo" href="../index.html">Midnight-Chapters</a>
+  <nav>
+    <a href="biblioteca.html" class="hide-sm">Início</a>
+    <a href="categorias.html" class="hide-sm">Categorias</a>
+    <a href="estante.html" class="hide-sm" style="position:relative;">
+      Minha Estante
+      <span class="nav-badge" id="nav-badge">0</span>
+    </a>
+    <a href="identificar-se.html" class="nav-cta">Identificar-se</a>
+  </nav>
+</header>
+
+<nav class="breadcrumb">
+  <a href="biblioteca.html">Início</a><span class="sep">/</span>
+  <a href="categorias.html">Categorias</a><span class="sep">/</span>
+  <a href="#">Artes</a><span class="sep">/</span>
+  <span class="current">Uma história do samba</span>
+</nav>
+
+<section class="book-hero">
+  <div class="cover-col">
+    <div class="cover-wrap">
+      <div class="cover-placeholder">
+        <div class="cp-diamond">◆</div>
+        <div class="cp-title">Uma história do Samba</div>
+        <div class="cp-author">Lira Neto</div>
+      </div>
+    </div>
+    <div class="stars" style="justify-content:center;">
+      <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span>
+      <span class="rating-val">4.2</span><span class="rating-count">(138)</span>
+    </div>
+    <div class="cover-actions">
+      <a href="#" class="btn-read">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        Ler agora
+      </a>
+      <button class="btn-save" id="btn-save" onclick="toggleSave()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        <span id="save-label">Salvar na estante</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="info-col">
+    <span class="book-category">Artes · Música</span>
+    <h1 class="book-title">Uma história do samba</h1>
+    <p class="book-subtitle">As origens — Vol. 1</p>
+    <div class="specs">
+      <div class="spec-item"><div class="spec-label">Autor</div><div class="spec-val">Lira Neto</div></div>
+      <div class="spec-item"><div class="spec-label">Editora</div><div class="spec-val">Companhia das Letras</div></div>
+      <div class="spec-item"><div class="spec-label">Lançamento</div><div class="spec-val">Março de 2017</div></div>
+      <div class="spec-item"><div class="spec-label">Páginas</div><div class="spec-val">352 páginas</div></div>
+      <div class="spec-item"><div class="spec-label">Idioma</div><div class="spec-val">Português (BR)</div></div>
+      <div class="spec-item"><div class="spec-label">ISBN</div><div class="spec-val">978-8535928778</div></div>
+    </div>
+    <div class="tags">
+      <a class="tag" href="#">Samba</a><a class="tag" href="#">Música Brasileira</a>
+      <a class="tag" href="#">História</a><a class="tag" href="#">Cultura Popular</a>
+      <a class="tag" href="#">Rio de Janeiro</a><a class="tag" href="#">Século XX</a>
+    </div>
+    <div class="share-row">
+      <span class="share-label">Compartilhar:</span>
+      <a class="share-btn" href="#">W</a>
+      <a class="share-btn" href="#">f</a>
+      <a class="share-btn" href="#">𝕏</a>
+    </div>
+  </div>
+</section>
+
+<div class="content-area">
+  <div class="main-col">
+    <div class="book-summary">
+      <h2 class="section-heading">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Resumo do Livro
+      </h2>
+      <div class="summary-text">
+        <p class="drop-cap">O samba é muito mais do que um ritmo — é a espinha dorsal da identidade cultural brasileira. Em <em>Uma história do samba: As origens</em>, o jornalista e biógrafo Lira Neto mergulha nas raízes profundas desse gênero musical que nasceu nos morros e terreiros do Rio de Janeiro e conquistou o mundo, rastreando sua trajetória desde os batuques africanos até a consolidação do samba como símbolo nacional.</p>
+        <p>Com uma narrativa envolvente e rigor histórico exemplar, Lira Neto reconstrói o Brasil das primeiras décadas do século XX — um país em ebulição, marcado por tensões raciais, sociais e políticas.</p>
+        <div class="summary-extra" id="summary-extra">
+          <p>A pesquisa de Lira Neto é impressionante. Figuras como Donga, Pixinguinha, João da Baiana e a mítica Tia Ciata ganham vida nessas páginas com uma profundidade raramente vista na literatura sobre música brasileira. Mais do que uma história musical, este é um livro sobre o Brasil e sua gente.</p>
+        </div>
+        <button class="read-more-toggle" onclick="toggleSummary(this)">
+          <span>Ler mais</span>
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="author-section">
+      <h2 class="section-heading">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Sobre o Autor
+      </h2>
+      <div class="author-card">
+        <div class="author-photo">L</div>
+        <div class="author-info">
+          <div class="author-name">Lira Neto</div>
+          <div class="author-title">Jornalista · Biógrafo · Escritor</div>
+          <p class="author-bio">Francisco Lira Neto nasceu em Fortaleza, Ceará, em 1965. É jornalista, biógrafo e um dos mais reconhecidos escritores brasileiros de não ficção. Autor das aclamadas biografias de Getúlio Vargas, Padre Cícero e da série <em>Uma história do samba</em>. Seu trabalho é marcado por pesquisa aprofundada, narrativa fluente e compromisso com a verdade histórica.</p>
+          <a class="author-more" href="#">Ver todos os livros do autor →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <h2 class="section-heading">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Comentários &amp; Avaliações
+      </h2>
+      <div class="comment-form">
+        <div class="form-title-sm">Deixe sua avaliação</div>
+        <div class="form-row">
+          <div class="form-field"><label>Seu nome</label><input type="text" id="c-nome" placeholder="Como quer ser identificado?"/></div>
+          <div class="form-field"><label>E-mail (não exibido)</label><input type="email" id="c-email" placeholder="seu@email.com"/></div>
+        </div>
+        <div class="form-field" style="margin-bottom:.75rem;">
+          <label>Sua nota</label>
+          <div class="star-picker">
+            <button class="star-pick" onclick="setStars(1)">★</button>
+            <button class="star-pick" onclick="setStars(2)">★</button>
+            <button class="star-pick" onclick="setStars(3)">★</button>
+            <button class="star-pick" onclick="setStars(4)">★</button>
+            <button class="star-pick" onclick="setStars(5)">★</button>
+          </div>
+        </div>
+        <div class="form-field" style="margin-bottom:.25rem;"><label>Comentário</label><textarea id="c-text" placeholder="O que você achou do livro?"></textarea></div>
+        <button class="btn-comment" onclick="submitComment()">Publicar comentário</button>
+      </div>
+      <div class="comment-count" id="comment-count">3 comentários</div>
+      <div class="comments-list" id="comments-list">
+        <div class="comment-card">
+          <div class="comment-header">
+            <div class="comment-avatar" style="background:linear-gradient(135deg,#c0392b,#96281b);">M</div>
+            <div class="comment-meta"><div class="comment-name">Mariana Souza</div><div class="comment-date">12 de março de 2024</div></div>
+            <div class="comment-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          </div>
+          <p class="comment-text">Simplesmente magnífico. Lira Neto consegue fazer a história soar como música — você lê e quase ouve o batuque nas páginas. Leitura obrigatória para qualquer brasileiro.</p>
+          <div class="comment-actions">
+            <button class="comment-action-btn" onclick="likeComment(this)"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg> Útil (12)</button>
+          </div>
+        </div>
+        <div class="comment-card">
+          <div class="comment-header">
+            <div class="comment-avatar" style="background:linear-gradient(135deg,#27ae60,#1e8449);">R</div>
+            <div class="comment-meta"><div class="comment-name">Roberto Almeida</div><div class="comment-date">8 de fevereiro de 2024</div></div>
+            <div class="comment-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span style="color:var(--border)">★</span></div>
+          </div>
+          <p class="comment-text">Excelente para quem quer entender as raízes do samba. A narrativa sobre a Tia Ciata é reveladora. Já comprei o segundo volume!</p>
+          <div class="comment-actions">
+            <button class="comment-action-btn" onclick="likeComment(this)"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg> Útil (7)</button>
+          </div>
+        </div>
+        <div class="comment-card">
+          <div class="comment-header">
+            <div class="comment-avatar" style="background:linear-gradient(135deg,#2980b9,#1a5276);">C</div>
+            <div class="comment-meta"><div class="comment-name">Camila Ferreira</div><div class="comment-date">21 de janeiro de 2024</div></div>
+            <div class="comment-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          </div>
+          <p class="comment-text">Li em três dias sem conseguir parar. Um dos melhores livros que li nos últimos anos. Vai te deixar com vontade de ouvir Pixinguinha.</p>
+          <div class="comment-actions">
+            <button class="comment-action-btn" onclick="likeComment(this)"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg> Útil (18)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">Avaliação dos leitores</div>
+      <div class="rating-big">
+        <div class="num">4.2</div>
+        <div class="stars" style="justify-content:center;gap:.2rem;margin:.4rem 0 .25rem;"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span></div>
+        <div class="total">138 avaliações</div>
+      </div>
+      <div class="rating-bars">
+        <div class="rating-bar-row"><span>5★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:58%"></div></div><span class="rating-bar-pct">58%</span></div>
+        <div class="rating-bar-row"><span>4★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:24%"></div></div><span class="rating-bar-pct">24%</span></div>
+        <div class="rating-bar-row"><span>3★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:11%"></div></div><span class="rating-bar-pct">11%</span></div>
+        <div class="rating-bar-row"><span>2★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:5%"></div></div><span class="rating-bar-pct">5%</span></div>
+        <div class="rating-bar-row"><span>1★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%"></div></div><span class="rating-bar-pct">2%</span></div>
+      </div>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-title">Ficha Técnica</div>
+      <div class="detail-list">
+        <div class="detail-row"><span class="detail-key">Formato</span><span class="detail-val">eBook</span></div>
+        <div class="detail-row"><span class="detail-key">Edição</span><span class="detail-val">1ª edição</span></div>
+        <div class="detail-row"><span class="detail-key">Páginas</span><span class="detail-val">352</span></div>
+        <div class="detail-row"><span class="detail-key">Publicado em</span><span class="detail-val">Mar. 2017</span></div>
+        <div class="detail-row"><span class="detail-key">Editora</span><span class="detail-val">Cia. das Letras</span></div>
+      </div>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-title">Você também pode gostar</div>
+      <div class="similar-list">
+        <a class="similar-book" href="#"><div class="similar-cover"></div><div><div class="similar-title">Samba — O dono do corpo</div><div class="similar-author">Muniz Sodré</div></div></a>
+        <a class="similar-book" href="#"><div class="similar-cover c2"></div><div><div class="similar-title">Feitiço Decente</div><div class="similar-author">Jorge Caldeira</div></div></a>
+        <a class="similar-book" href="#"><div class="similar-cover c3"></div><div><div class="similar-title">A música popular brasileira</div><div class="similar-author">J. R. Tinhorão</div></div></a>
+        <a class="similar-book" href="#"><div class="similar-cover c4"></div><div><div class="similar-title">Noites Cariocas</div><div class="similar-author">Ruy Castro</div></div></a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer style="background:var(--ink);color:rgba(255,255,255,.45);text-align:center;padding:2rem 1rem;font-size:.78rem;">
+  <p><strong style="color:#fff">BSP Digital</strong> — Todos os direitos reservados &copy; 2025</p>
+</footer>
+
+<script>
+const BOOK = {
+  id:'uma-historia-do-samba', title:'Uma história do samba',
+  subtitle:'As origens — Vol. 1', author:'Lira Neto',
+  category:'Artes · Música', year:'2017', pages:'352', rating:'4.2',
+  cover_bg:'linear-gradient(135deg,#7b0000,#c0392b)', cover_text:'◆',
+  status:'quero-ler', progress:0, url:'livro.html'
+};
+
+function getShelf(){try{return JSON.parse(localStorage.getItem('bsp_shelf')||'[]')}catch{return[]}}
+function saveShelf(s){localStorage.setItem('bsp_shelf',JSON.stringify(s))}
+function isOnShelf(id){return getShelf().some(b=>b.id===id)}
+function addToShelf(b){const s=getShelf().filter(x=>x.id!==b.id);b.saved_at=new Date().toISOString();s.unshift(b);saveShelf(s)}
+function removeFromShelf(id){saveShelf(getShelf().filter(b=>b.id!==id))}
+
+function updateBadge(){
+  const c=getShelf().length, el=document.getElementById('nav-badge');
+  if(el){el.textContent=c;el.classList.toggle('show',c>0)}
+}
+
+function initBtn(){
+  const saved=isOnShelf(BOOK.id);
+  const btn=document.getElementById('btn-save'), lbl=document.getElementById('save-label');
+  btn.classList.toggle('saved',saved);
+  lbl.textContent=saved?'Salvo na estante ✓':'Salvar na estante';
+  updateBadge();
+}
+
+let toastT;
+function showToast(msg,link){
+  const t=document.getElementById('toast'), m=document.getElementById('toast-msg'), a=document.getElementById('toast-link');
+  m.textContent=msg; a.style.display=link?'':'none';
+  t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+function toggleSave(){
+  const saved=isOnShelf(BOOK.id);
+  const btn=document.getElementById('btn-save'), lbl=document.getElementById('save-label');
+  if(saved){removeFromShelf(BOOK.id);btn.classList.remove('saved');lbl.textContent='Salvar na estante';showToast('Livro removido da estante.',false)}
+  else{addToShelf({...BOOK});btn.classList.add('saved');lbl.textContent='Salvo na estante ✓';showToast('Livro salvo na sua estante!',true)}
+  updateBadge();
+}
+
+function toggleSummary(btn){
+  const e=document.getElementById('summary-extra'), o=e.classList.toggle('open');
+  btn.querySelector('span').textContent=o?'Ler menos':'Ler mais';
+  btn.querySelector('svg').style.transform=o?'rotate(180deg)':'';
+}
+
+let sel=0;
+function setStars(v){sel=v;document.querySelectorAll('.star-pick').forEach((b,i)=>b.classList.toggle('active',i<v))}
+document.querySelectorAll('.star-pick').forEach((b,i)=>{
+  b.addEventListener('mouseenter',()=>document.querySelectorAll('.star-pick').forEach((x,j)=>x.style.color=j<=i?'var(--gold)':''));
+  b.addEventListener('mouseleave',()=>document.querySelectorAll('.star-pick').forEach((x,j)=>x.style.color=j<sel?'var(--gold)':''));
+});
+
+const AVC=['linear-gradient(135deg,#c0392b,#96281b)','linear-gradient(135deg,#8e44ad,#6c3483)','linear-gradient(135deg,#2980b9,#1a5276)','linear-gradient(135deg,#27ae60,#1e8449)','linear-gradient(135deg,#e67e22,#ca6f1e)'];
+function submitComment(){
+  const n=document.getElementById('c-nome').value.trim(), t=document.getElementById('c-text').value.trim();
+  if(!n){alert('Insira seu nome.');return} if(!t){alert('Escreva um comentário.');return} if(!sel){alert('Selecione uma nota.');return}
+  const sh=Array.from({length:5},(_,i)=>`<span style="color:${i<sel?'var(--gold)':'var(--border)'}">★</span>`).join('');
+  const bg=AVC[Math.floor(Math.random()*AVC.length)], d=new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'});
+  const c=document.createElement('div'); c.className='comment-card';
+  c.innerHTML=`<div class="comment-header"><div class="comment-avatar" style="background:${bg}">${n[0].toUpperCase()}</div><div class="comment-meta"><div class="comment-name">${esc(n)}</div><div class="comment-date">${d}</div></div><div class="comment-stars">${sh}</div></div><p class="comment-text">${esc(t)}</p><div class="comment-actions"><button class="comment-action-btn" onclick="likeComment(this)"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg> Útil (0)</button></div>`;
+  const l=document.getElementById('comments-list'); l.insertBefore(c,l.firstChild);
+  const tot=l.querySelectorAll('.comment-card').length; document.getElementById('comment-count').textContent=`${tot} comentário${tot!==1?'s':''}`;
+  document.getElementById('c-nome').value=''; document.getElementById('c-email').value=''; document.getElementById('c-text').value='';
+  sel=0; document.querySelectorAll('.star-pick').forEach(b=>{b.classList.remove('active');b.style.color='';});
+  c.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function likeComment(b){const m=b.textContent.match(/\((\d+)\)/);if(m){b.innerHTML=b.innerHTML.replace(/\(\d+\)/,`(${+m[1]+1})`);b.style.color='var(--accent)';b.disabled=true;}}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+initBtn();
+</script>
+</body>
+</html>

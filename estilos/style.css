@@ -2,6 +2,12 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0;}
 
     :root {
+      --color0:#10002b;
+      --color1:#240046;
+      --color2:#3c096c;
+      --color3:#5a189a;
+      --color4:#7b2cbf;
+      --color5:#9d4edd;
       --bg: #f5f2ee;
       --surface: #ffffff;
       --ink: #1a1410;
@@ -14,6 +20,7 @@
       --radius: 6px;
       --font-display: 'Playfair Display', Georgia, serif;
       --font-body: 'DM Sans', sans-serif;
+      
     }
 
     html { scroll-behavior: smooth; }
@@ -50,34 +57,34 @@
       text-decoration: none;
       letter-spacing: -0.03em;
     }
-    .logo span { color: var(--accent); }
+    .logo span { color: var(--color2); }
 
     nav { display: flex; gap: 0.5rem; align-items: center; }
     nav a {
       font-size: 0.85rem;
       font-weight: 500;
-      color: var(--ink-muted);
+      color: var(--color4);
       text-decoration: none;
       padding: 0.4rem 0.8rem;
       border-radius: 999px;
       transition: background 0.2s, color 0.2s;
     }
-    nav a:hover { background: var(--bg); color: var(--ink); }
+    nav a:hover { background: var(--color5); color: var(--color3); }
     .nav-cta {
-      background: var(--accent) !important;
-      color: #fff !important;
+      background: var(--color3) !important;
+      color: var(--border) !important;
       font-weight: 500;
     }
-    .nav-cta:hover { background: var(--accent-dark) !important; }
+    .nav-cta:hover { background: var(--color4) !important; }
 
     /* ── HERO ── */
     .hero {
-      background: linear-gradient(135deg, #1a1410 0%, #2d1f1a 60%, #3d2b20 100%);
+      background: linear-gradient(135deg, var(--color1) 0%, var(--color0) 60%, var(--color2) 100%);
       color: #fff;
       padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 5vw, 4rem);
       text-align: center;
       position: relative;
-      overflow: hidden;
+      overflow: hidden;font-family: var();
     }
     .hero::before {
       content: '';
@@ -97,8 +104,8 @@
       font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--accent);
+      color: var(--color5);
+      border: 1px solid var(--color5);
       padding: 0.25rem 0.9rem;
       border-radius: 999px;
       margin-bottom: 1.5rem;
@@ -119,7 +126,7 @@
     }
     .hero-btn {
       display: inline-block;
-      background: var(--accent);
+      background: var(--color2);
       color: #fff;
       font-family: var(--font-body);
       font-size: 0.9rem;
@@ -129,7 +136,7 @@
       border-radius: 999px;
       transition: background 0.2s, transform 0.2s;
     }
-    .hero-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+    .hero-btn:hover { background: var(--color3); transform: translateY(-2px); }
 
     /* ── MAIN ── */
     main {
@@ -161,13 +168,13 @@
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--color2);
       text-decoration: none;
       white-space: nowrap;
       border-bottom: 1px solid transparent;
       transition: border-color 0.2s;
     }
-    .section-link:hover { border-color: var(--accent); }
+    .section-link:hover { border-color: var(--color2); }
 
     /* ── BOOK GRID ── */
     .book-grid {
@@ -282,12 +289,12 @@
       border-radius: 3px;
       z-index: 2;
     }
-    .badge-new { background: var(--accent); color: #fff; }
+    .badge-new { background: var(--color5); color: #fff; }
     .badge-hot { background: #e67e22; color: #fff; }
 
     /* ── FEATURED STRIP ── */
     .featured-strip {
-      background: var(--ink);
+      background: var(--color2);
       border-radius: 12px;
       padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 3rem);
       display: flex;
@@ -315,7 +322,7 @@
       font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--border);
       margin-bottom: 0.5rem;
     }
     .featured-strip h2 {
@@ -332,7 +339,7 @@
     }
     .featured-strip-cta {
       flex-shrink: 0;
-      background: var(--accent);
+      background: var(--color2);
       color: #fff;
       text-decoration: none;
       padding: 0.7rem 1.6rem;
@@ -341,7 +348,7 @@
       font-weight: 500;
       transition: background 0.2s;
     }
-    .featured-strip-cta:hover { background: var(--accent-dark); }
+    .featured-strip-cta:hover { background: var(--color3); }
 
     /* ── FOOTER ── */
     footer {
